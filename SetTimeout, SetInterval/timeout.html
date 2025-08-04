@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<h1>Current Time:</h1>
+<p id="clock"></p>
+
+<script>
+  function updateTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString();
+    document.getElementById('clock').textContent = timeString;
+  }
+
+  // Update the time immediately, then every second
+  updateTime();
+  setInterval(updateTime, 1000);
+</script>
+</body>
+</html>
