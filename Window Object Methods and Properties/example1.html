@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Window Methods Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h2 { color: #333; }
+    button { margin: 5px; padding: 8px 15px; cursor: pointer; }
+    .group { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+  <h1>🧪 Window Methods Demo</h1>
+
+  <div class="group">
+    <h2>Basic Dialogs</h2>
+    <button onclick="alert('This is an alert!')">Alert</button>
+    <button onclick="confirmAction()">Confirm</button>
+    <button onclick="promptInput()">Prompt</button>
+  </div>
+
+  <div class="group">
+    <h2>Timers</h2>
+    <button onclick="startTimeout()">Set Timeout</button>
+    <button onclick="clearTimeout(timeoutId)">Clear Timeout</button>
+    <button onclick="startInterval()">Set Interval</button>
+    <button onclick="clearInterval(intervalId)">Clear Interval</button>
+  </div>
+
+  <div class="group">
+    <h2>Window Actions</h2>
+    <button onclick="openWindow()">Open Window</button>
+    <button onclick="window.close()">Close Window</button>
+    <button onclick="window.print()">Print</button>
+  </div>
+
+  <div class="group">
+    <h2>Scroll</h2>
+    <button onclick="window.scrollTo(0, 500)">Scroll To 500px</button>
+    <button onclick="window.scrollBy(0, 100)">Scroll Down 100px</button>
+  </div>
+
+  <div class="group">
+    <h2>Resize / Move</h2>
+    <button onclick="window.moveBy(50, 50)">Move By 50px</button>
+    <button onclick="window.resizeBy(100, 100)">Resize By</button>
+  </div>
+
+  <div class="group">
+    <h2>Info</h2>
+    <button onclick="showInfo()">Show Window Info</button>
+  </div>
+
+  <script>
+    let timeoutId, intervalId;
+
+    function confirmAction() {
+      const result = confirm("Do you want to proceed?");
+      alert("You selected: " + result);
+    }
+
+    function promptInput() {
+      const name = prompt("Enter your name:", "Guest");
+      alert("Hello, " + name);
+    }
+
+    function startTimeout() {
+      timeoutId = setTimeout(() => alert("Timeout fired!"), 3000);
+    }
+
+    function startInterval() {
+      intervalId = setInterval(() => console.log("Interval tick"), 1000);
+    }
+
+    function openWindow() {
+      window.open("https://example.com", "_blank", "width=400,height=400");
+    }
+
+    function showInfo() {
+      console.log("InnerWidth:", window.innerWidth);
+      console.log("OuterHeight:", window.outerHeight);
+      console.log("ScrollX:", window.scrollX);
+      console.log("PageYOffset:", window.pageYOffset);
+      console.log("ScreenX:", window.screenX);
+      console.log("Location:", window.location.href);
+    }
+  </script>
+
+  <div style="height: 1000px;"></div>
+
+</body>
+</html>
