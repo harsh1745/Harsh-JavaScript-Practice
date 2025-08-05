@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Objects Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Window Object</h2>
+        <p>Window width: <span id="windowWidth"></span></p>
+        <p>Window height: <span id="windowHeight"></span></p>
+        <button onclick="openNewWindow()">Open New Window</button>
+    </div>
+
+    <div class="container">
+        <h2>Screen Object</h2>
+        <p>Screen width: <span id="screenWidth"></span></p>
+        <p>Screen height: <span id="screenHeight"></span></p>
+        <p>Color depth: <span id="colorDepth"></span></p>
+    </div>
+
+    <div class="container">
+        <h2>Document Object</h2>
+        <p>Document title: <span id="documentTitle"></span></p>
+        <p>Number of forms: <span id="numForms"></span></p>
+        <p>Number of links: <span id="numLinks"></span></p>
+    </div>
+
+    <div class="container">
+        <h2>Navigator Object</h2>
+        <p>User agent: <span id="userAgent"></span></p>
+        <p>Platform: <span id="platform"></span></p>
+        <p>Language: <span id="language"></span></p>
+    </div>
+
+    <div class="container">
+        <h2>Location Object</h2>
+        <p>Current URL: <span id="currentURL"></span></p>
+        <button onclick="changeLocation()">Change Location</button>
+    </div>
+
+    <div class="container">
+        <h2>History Object</h2>
+        <p>Number of history entries: <span id="numHistoryEntries"></span></p>
+        <button onclick="goBack()">Go Back</button>
+    </div>
+
+    <script>
+        // Window Object
+        document.getElementById('windowWidth').innerText = window.innerWidth;
+        document.getElementById('windowHeight').innerText = window.innerHeight;
+
+        function openNewWindow() {
+            window.open('https://www.google.com', '_blank', 'width=1000,height=1000');
+        }
+
+        // Screen Object
+        document.getElementById('screenWidth').innerText = screen.width;
+        document.getElementById('screenHeight').innerText = screen.height;
+        document.getElementById('colorDepth').innerText = screen.colorDepth;
+
+        // Document Object
+        document.getElementById('documentTitle').innerText = document.title;
+        document.getElementById('numForms').innerText = document.forms.length;
+        document.getElementById('numLinks').innerText = document.links.length;
+
+        // Navigator Object
+        document.getElementById('userAgent').innerText = navigator.userAgent;
+        document.getElementById('platform').innerText = navigator.platform;
+        document.getElementById('language').innerText = navigator.language;
+
+        // Location Object
+        document.getElementById('currentURL').innerText = location.href;
+
+        function changeLocation() {
+            location.href = 'https://www.example.com';
+        }
+
+        // History Object
+        document.getElementById('numHistoryEntries').innerText = history.length;
+
+        function goBack() {
+            history.back();
+        }
+    </script>
+</body>
+</html>

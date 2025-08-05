@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON</title>
+  </head>
+  <body>
+    <script>
+      // Step 1: Prompt user for input in JSON format
+      const userInput = prompt(
+        'Enter person details in JSON format (e.g. {"name":"Harsh","age":22,"city":"Rajkot"})'
+      );
+
+      try {
+        // Step 2: Convert to JavaScript object
+        const person = JSON.parse(userInput);
+
+        // Step 3: Display object properties
+        console.log("🔍 Person Details as JavaScript Object:");
+        console.log("Name:", person.name);
+        console.log("Age:", person.age);
+        console.log("City:", person.city);
+
+        // Step 4: Convert back to JSON string
+        const jsonOutput = JSON.stringify(person);
+
+        // Step 5: Display final JSON
+        console.log("📦 Converted back to JSON string:");
+        console.log(jsonOutput);
+      } catch (error) {
+        console.error("❌ Invalid JSON format! Please enter valid JSON.");
+        alert("❌ Invalid JSON format! Please enter valid JSON.");
+      }
+    </script>
+  </body>
+</html>

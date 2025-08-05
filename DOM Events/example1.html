@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Types Example</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f5f5;
+      margin: 20px;
+    }
+
+    .button {
+      padding: 10px;
+      cursor: pointer;
+      margin-right: 10px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    #otherElement {
+      width: 100px;
+      height: 100px;
+      background-color: #2ecc71;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      cursor: pointer;
+      border-radius: 5px;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    #otherElement:hover {
+      background-color: #27ae60;
+    }
+
+    input {
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      width: 200px;
+      box-sizing: border-box;
+    }
+
+    form {
+      max-width: 300px;
+    }
+    #select{
+      margin: 20px 10px;
+    }
+    .hover-box{
+        margin-top: 50px;
+        height:400px;
+        width:400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .hover-box h3{
+        mix-blend-mode: color;
+    }
+  </style>
+</head>
+<body>
+
+<button id="clickButton" class="button">Click me!</button>
+<button id="dblClickButton" class="button">Double Click me!</button>
+<button id="mouseoverButton" class="button">Hover me!</button>
+<br><br>
+
+<div id="otherElement">click me!!!</div>
+<br><br>
+
+<input type="text" id="focus-blur" placeholder="focus-blur event">
+<br><br>
+<input type="text" id="key-press" placeholder="key press event">
+<br><br>
+<input type="text" id="key-up" placeholder="key-up event">
+<br><br>
+<input type="text" id="key-down" placeholder="key down event">
+<br><br>
+<input type="text" id="input" placeholder="input event">
+<br><br>
+
+<form id="myForm">
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username">
+  <br>
+  <select id="select">
+    <option value="1">change event trigger</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </select>
+  <br>
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password">
+  <br><br>
+  <input type="submit" value=" form Submit event " class="button">
+</form>
+<div class="hover-box">
+    <h3> mouse move </h3>
+</div>
+<script>
+  var btn = document.getElementById("clickButton");
+  // Click event 
+  document.getElementById("clickButton").addEventListener("click", function(e) {
+    console.log("Click button clicked!");
+  });
+  // Double click event 
+  document.getElementById("dblClickButton").addEventListener("dblclick", function(e) {
+    console.log("Double click button double-clicked!");
+  });
+  // Mouse over event 
+  document.getElementById("mouseoverButton").addEventListener("mouseover", function(e) {
+    console.log("Mouse over button!");
+  })
+  // Mouse out event 
+  document.getElementById("mouseoverButton").addEventListener("mouseout", function(e) {
+    console.log("Mouse out of button!");
+  });
+  // Mouse down event 
+  document.getElementById("otherElement").addEventListener("mousedown", function(e) {
+    console.log("Other element mouse button down!");
+  });
+  // Mouse up event 
+  document.getElementById("otherElement").addEventListener("mouseup", function(e) {
+    console.log("Other element mouse button up!");
+  });
+
+    // Key PRESS event
+    document.getElementById("key-press").addEventListener("keypress", function(e) {
+      //console.log("Key PRESS:", e.target.value);
+      console.log("event type:"+ e.type);
+  });
+  // Key down event
+  document.getElementById("key-up").addEventListener("keyup", function(e) {
+    //console.log("Key down:", e.target.value);
+    console.log("event type:"+ e.type);
+  });
+  // Key up event
+  document.getElementById("key-down").addEventListener("keydown", function(e) {
+    //console.log("Key up:", e.target.value);
+    console.log("event type:"+ e.type);
+  });
+
+  // Input event
+  document.getElementById("input").addEventListener("input", function(e) {
+    console.log("event type:"+ e.type);
+  });
+  // Focus event
+  document.getElementById("focus-blur").addEventListener("focus", function(e) {
+    console.log("Input field focused!");
+  });
+  // Blur event
+  document.getElementById("focus-blur").addEventListener("blur", function(e) {
+    console.log("Input field blur!");
+  });
+  // cut event
+  document.getElementById("input").addEventListener("cut", function(e) {
+    console.log("event type:"+ e.type);
+  });
+    // copy event
+    document.getElementById("input").addEventListener("copy", function(e) {
+      console.log("event type:"+ e.type);
+  });
+    // paste event
+    document.getElementById("input").addEventListener("paste", function(e) {
+      console.log("event type:"+ e.type);
+  });
+    // change event
+    document.getElementById("select").addEventListener("change", function(e) {
+    console.log("event type:"+ e.type);
+  });
+  // Form submit event
+  document.getElementById("myForm").addEventListener("submit", function(e) {
+    event.preventDefault(); // Prevents the form from actually submitting
+    console.log("Form submitted!");
+  });
+  var box = document.querySelector(".hover-box");
+  box.addEventListener("mousemove" , function(e){
+        box.style.backgroundColor = "rgb("+e.offsetX + ","+ e.offsetY + ",40)";
+        console.log(e.type);
+        document.querySelector(".hover-box h3").innerHTML =  "offsetX "+ e.offsetX + "<br> offsetY "+ e.offsetY + "<br> clientX "+ e.clientX + "<br> clientY "+ e.clientY 
+  })
+  var elem = document.createElement("div");
+  elem.innerHTML = "<h2> check console for output </h2>";
+  document.body.insertBefore(elem , btn)
+  // document.addEventListener("DOMContentLoaded" , function(){alert("check console for output")})
+</script>
+</body>
+</html>

@@ -1,251 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GitHub User Finder</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f9fafb;
-      color: #111827;
-      padding: 2rem;
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 960px;
-      margin: auto;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .header h1 {
-      font-size: 2rem;
-      font-weight: 600;
-      color: #4f46e5;
-    }
-
-    .search-box {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 2.5rem;
-      flex-wrap: wrap;
-    }
-
-    .search-box input {
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      width: 260px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      transition: 0.3s;
-    }
-
-    .search-box input:focus {
-      outline: none;
-      border-color: #6366f1;
-    }
-
-    .search-box button {
-      background-color: #6366f1;
-      color: white;
-      padding: 0.75rem 1.2rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .search-box button:hover {
-      background-color: #4f46e5;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-      padding: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .profile {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .profile img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .repo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .repo-card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-      transition: transform 0.2s ease;
-    }
-
-    .repo-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .repo-card h4 {
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .repo-card p {
-      font-size: 0.9rem;
-      color: #374151;
-    }
-
-    .badges {
-      margin-top: 0.5rem;
-    }
-
-    .badge {
-      display: inline-block;
-      background-color: #6366f1;
-      color: white;
-      padding: 4px 10px;
-      margin-right: 6px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-    }
-
-    .loader {
-      border: 4px solid #e5e7eb;
-      border-top: 4px solid #6366f1;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1s linear infinite;
-      margin: 2rem auto;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .center {
-      text-align: center;
-    }
-
-    a {
-      text-decoration: none;
-      color: #4f46e5;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>🔍 GitHub User Finder</h1>
-    </div>
-
-    <div class="search-box">
-      <input type="text" id="username" placeholder="Enter GitHub username" />
-      <button id="btn">Search</button>
-    </div>
-
-    <div id="profile"></div>
-    <div id="repos"></div>
-  </div>
-
-  <script>
-    const btn = document.getElementById("btn");
-    const usernameInput = document.getElementById("username");
-    const profileDiv = document.getElementById("profile");
-    const reposDiv = document.getElementById("repos");
-
-    btn.addEventListener("click", async () => {
-      const username = usernameInput.value.trim();
-      if (!username) return alert("Please enter a username");
-
-      profileDiv.innerHTML = `<div class="loader"></div>`;
-      reposDiv.innerHTML = "";
-
-      try {
-        const userRes = await fetch(`https://api.github.com/users/${username}`);
-        if (!userRes.ok) {
-          profileDiv.innerHTML = `<p class="center" style="color: red;">User not found!</p>`;
-          return;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub User Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        const user = await userRes.json();
 
-        profileDiv.innerHTML = `
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #f9fafb;
+            color: #111827;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #4f46e5;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box input {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            width: 260px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .search-box button {
+            background-color: #6366f1;
+            color: white;
+            padding: 0.75rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-box button:hover {
+            background-color: #4f46e5;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .profile img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .repo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .repo-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s ease;
+        }
+
+        .repo-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .repo-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .repo-card p {
+            font-size: 0.9rem;
+            color: #374151;
+        }
+
+        .badges {
+            margin-top: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #6366f1;
+            color: white;
+            padding: 4px 10px;
+            margin-right: 6px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+
+        .loader {
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #6366f1;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4f46e5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 GitHub User Finder</h1>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="username" placeholder="Enter GitHub username" />
+            <button id="btn">Search</button>
+        </div>
+
+        <div id="profile"></div>
+        <div id="repos"></div>
+    </div>
+
+    <script>
+        const btn = document.getElementById("btn");
+        const usernameInput = document.getElementById("username");
+        const profileDiv = document.getElementById("profile");
+        const reposDiv = document.getElementById("repos");
+
+        btn.addEventListener("click", async () => {
+            const username = usernameInput.value.trim();
+            if (!username) return alert("Please enter a username");
+
+            profileDiv.innerHTML = `<div class="loader"></div>`;
+            reposDiv.innerHTML = "";
+
+            try {
+                const userRes = await fetch(
+                    `https://api.github.com/users/${username}`
+                );
+                if (!userRes.ok) {
+                    profileDiv.innerHTML = `<p class="center" style="color: red;">User not found!</p>`;
+                    return;
+                }
+                const user = await userRes.json();
+
+                profileDiv.innerHTML = `
           <div class="card profile">
             <img src="${user.avatar_url}" alt="${user.login}" />
             <div>
               <h2>${user.name || user.login}</h2>
               <p><strong>Location:</strong> ${user.location || "N/A"}</p>
               <p><strong>Public Repos:</strong> ${user.public_repos}</p>
-              <p><a href="${user.html_url}" target="_blank">View GitHub Profile →</a></p>
+              <p><a href="${user.html_url
+                    }" target="_blank">View GitHub Profile →</a></p>
             </div>
           </div>
         `;
 
-        const repoRes = await fetch(`https://api.github.com/users/${username}/repos`);
-        const repos = await repoRes.json();
+                const repoRes = await fetch(
+                    `https://api.github.com/users/${username}/repos`
+                );
+                const repos = await repoRes.json();
 
-        if (!repos.length) {
-          reposDiv.innerHTML = `<p class="center">No repositories found.</p>`;
-          return;
-        }
+                if (!repos.length) {
+                    reposDiv.innerHTML = `<p class="center">No repositories found.</p>`;
+                    return;
+                }
 
-        const topRepos = repos
-          .sort((a, b) => b.stargazers_count - a.stargazers_count)
-          .slice(0, 5);
+                const topRepos = repos
+                    .sort((a, b) => b.stargazers_count - a.stargazers_count)
+                    .slice(0, 5);
 
-        reposDiv.innerHTML = `
+                reposDiv.innerHTML = `
           <div class="card">
             <h3 style="margin-bottom: 1rem;">⭐ Top 5 Repositories</h3>
             <div class="repo-grid">
-              ${topRepos.map(repo => `
+              ${topRepos
+                        .map(
+                            (repo) => `
                 <div class="repo-card">
-                  <h4><a href="${repo.html_url}" target="_blank">${repo.name}</a></h4>
+                  <h4><a href="${repo.html_url}" target="_blank">${repo.name
+                                }</a></h4>
                   <p>${repo.description || "No description available."}</p>
                   <div class="badges">
                     <span class="badge">⭐ ${repo.stargazers_count}</span>
                     <span class="badge">🍴 ${repo.forks_count}</span>
                   </div>
                 </div>
-              `).join('')}
+              `
+                        )
+                        .join("")}
             </div>
           </div>
         `;
-
-      } catch (err) {
-        console.error(err);
-        profileDiv.innerHTML = `<p class="center" style="color:red;">Something went wrong.</p>`;
-      }
-    });
-  </script>
+            } catch (err) {
+                console.error(err);
+                profileDiv.innerHTML = `<p class="center" style="color:red;">Something went wrong.</p>`;
+            }
+        });
+    </script>
 </body>
 </html>

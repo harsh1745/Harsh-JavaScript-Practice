@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Example: POST Request</title>
+</head>
+<body>
+
+  <script>
+    const URL = "https://jsonplaceholder.typicode.com/posts";
+
+    const updateData = async () => {
+      try {
+        // Step 1: User se JSON format me input lo
+        const userInput = prompt('Enter data in JSON format (e.g. {"title":"hello","body":"world"})');
+
+        // Step 2: Convert input string to JS object
+        const dataToSend = JSON.parse(userInput);
+
+        // Step 3: POST request bhejna using fetch()
+        const response = await fetch(URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(dataToSend)
+        });
+
+        // Step 4: Response ko handle karna
+        const responseData = await response.json();
+        console.log("✅ Data successfully sent!");
+        console.log("🔁 Server Response:", responseData);
+
+      } catch (error) {
+        console.error("❌ Error:", error.message);
+      }
+    };
+
+    // Call function
+    updateData();
+  </script>
+
+</body>
+</html>

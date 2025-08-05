@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example 4</title>
+</head>
+
+<body>
+    <p>1.Create a function called fetchData that makes a GET request to the URL
+        'https://jsonplaceholder.typicode.com/posts'. Use the Fetch API to fetch the data from the server. If the
+        response is successful, log the response data to the console. If the response is not successful, log an error
+        message with the error status to the console.</p>
+    <script>
+        const URL = "https://jsonplaceholder.typicode.com/posts";
+
+        const fetchData = async () => {
+            try {
+                console.log("Getting data...");
+                const response = await fetch(URL);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("✅ Data received:", data);
+                } else {
+                    console.error(`❌ Error: ${response.status} - ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error("❌ Network Error:", error);
+            }
+        };
+
+        fetchData();  // Correct way to call async function
+    </script>
+
+</body>
+
+</html>
