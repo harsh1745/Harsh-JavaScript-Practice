@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Scroll to Top Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    #scrollTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: none;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      font-size: 16px;
+    }
+
+    #scrollTopBtn:hover {
+      background-color: #388e3c;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Scroll to Top Demo</h1>
+  <p>Scroll down to see the button...</p>
+
+  <div style="height: 2000px; background: linear-gradient(white, #4b4646);"></div>
+
+  <button id="scrollTopBtn">⬆ Top</button>
+
+  <script>
+    const scrollBtn = document.getElementById("scrollTopBtn");
+
+    // Show/hide button on scroll
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        scrollBtn.style.display = "block";
+      } else {
+        scrollBtn.style.display = "none";
+      }
+    });
+
+    // Scroll to top on click
+    scrollBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  </script>
+
+</body>
+</html>

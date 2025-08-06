@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Smooth Scroll Demo</title>
+  <style>
+    html {
+      scroll-behavior: smooth; 
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    nav {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background: #333;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    nav a {
+      color: white;
+      margin-right: 10px;
+      text-decoration: none;
+    }
+
+    section {
+      height: 100vh;
+      padding: 40px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    #section1 { background: #f9f9f9; }
+    #section2 { background: #e0f7fa; }
+    #section3 { background: #fff9c4; }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Links -->
+  <nav>
+    <a href="#section1">Section 1</a>
+    <a href="#section2">Section 2</a>
+    <a href="#section3">Section 3</a>
+  </nav>
+
+  <!-- Page Sections -->
+  <section id="section1">
+    <h2>Section 1</h2>
+    <p>This is the first section.</p>
+  </section>
+
+  <section id="section2">
+    <h2>Section 2</h2>
+    <p>This is the second section.</p>
+  </section>
+
+  <section id="section3">
+    <h2>Section 3</h2>
+    <p>This is the third section.</p>
+  </section>
+
+</body>
+</html>

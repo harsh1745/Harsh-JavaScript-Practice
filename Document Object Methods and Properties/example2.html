@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example 2</title>
+</head>
+<body>
+    <button id="myButton" onclick="PopupOpen()">Click me!</button>
+    <script>
+        let mybtn=document.getElementById("mybutton");
+
+        let PopupOpen=()=>{
+            window.open('http://google.com/','_blank','width=500,height=500');
+            console.log("popup open");
+        }
+        
+    </script>
+</body>
+</html>

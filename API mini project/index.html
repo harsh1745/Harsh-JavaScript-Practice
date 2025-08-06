@@ -204,17 +204,17 @@
                 const user = await userRes.json();
 
                 profileDiv.innerHTML = `
-          <div class="card profile">
-            <img src="${user.avatar_url}" alt="${user.login}" />
-            <div>
-              <h2>${user.name || user.login}</h2>
-              <p><strong>Location:</strong> ${user.location || "N/A"}</p>
-              <p><strong>Public Repos:</strong> ${user.public_repos}</p>
-              <p><a href="${user.html_url
-                    }" target="_blank">View GitHub Profile →</a></p>
-            </div>
-          </div>
-        `;
+                    <div class="card profile">
+                        <img src="${user.avatar_url}" alt="${user.login}" />
+                        <div>
+                        <h2>${user.name || user.login}</h2>
+                        <p><strong>Location:</strong> ${user.location || "N/A"}</p>
+                        <p><strong>Public Repos:</strong> ${user.public_repos}</p>
+                        <p><a href="${user.html_url
+                                }" target="_blank">View GitHub Profile →</a></p>
+                        </div>
+                    </div>
+                `;
 
                 const repoRes = await fetch(
                     `https://api.github.com/users/${username}/repos`
@@ -231,27 +231,27 @@
                     .slice(0, 5);
 
                 reposDiv.innerHTML = `
-          <div class="card">
-            <h3 style="margin-bottom: 1rem;">⭐ Top 5 Repositories</h3>
-            <div class="repo-grid">
-              ${topRepos
-                        .map(
-                            (repo) => `
-                <div class="repo-card">
-                  <h4><a href="${repo.html_url}" target="_blank">${repo.name
-                                }</a></h4>
-                  <p>${repo.description || "No description available."}</p>
-                  <div class="badges">
-                    <span class="badge">⭐ ${repo.stargazers_count}</span>
-                    <span class="badge">🍴 ${repo.forks_count}</span>
-                  </div>
-                </div>
-              `
-                        )
-                        .join("")}
-            </div>
-          </div>
-        `;
+                    <div class="card">
+                        <h3 style="margin-bottom: 1rem;">⭐ Top 5 Repositories</h3>
+                        <div class="repo-grid">
+                        ${topRepos
+                                    .map(
+                                        (repo) => `
+                            <div class="repo-card">
+                            <h4><a href="${repo.html_url}" target="_blank">${repo.name
+                                            }</a></h4>
+                            <p>${repo.description || "No description available."}</p>
+                            <div class="badges">
+                                <span class="badge">⭐ ${repo.stargazers_count}</span>
+                                <span class="badge">🍴 ${repo.forks_count}</span>
+                            </div>
+                            </div>
+                        `
+                                    )
+                                    .join("")}
+                        </div>
+                    </div>
+                `;
             } catch (err) {
                 console.error(err);
                 profileDiv.innerHTML = `<p class="center" style="color:red;">Something went wrong.</p>`;
