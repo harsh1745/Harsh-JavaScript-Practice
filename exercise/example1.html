@@ -1,0 +1,379 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Random Users — Lite Gallery</title>
+  <style>
+    /* Simple reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: #f7fafc;
+      color: #0f172a;
+      padding: 20px;
+    }
+
+    header {
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom: 16px;
+    }
+    h1 { font-size:1.25rem; color:#0b3b57; }
+
+    /* Controls */
+    .controls {
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .controls select, .controls input {
+      padding:8px 10px;
+      border-radius:8px;
+      border:1px solid #e2e8f0;
+      background:white;
+      font-size:0.95rem;
+    }
+    .controls button {
+      padding:8px 12px;
+      border-radius:8px;
+      border:none;
+      background:#0ea5a4;
+      color:white;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .controls button:disabled { opacity:.6; cursor:not-allowed; }
+
+    /* Grid */
+    .grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap:14px;
+      margin-top: 14px;
+    }
+
+    /* Card */
+    .card {
+      background:white;
+      border-radius:12px;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      transition: transform .16s ease, box-shadow .16s ease;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 14px 30px rgba(2,6,23,0.08); }
+
+    .card-top {
+      display:flex;
+      gap:12px;
+      padding:12px;
+      align-items:center;
+    }
+    .avatar {
+      width:64px;
+      height:64px;
+      border-radius:12px;
+      overflow:hidden;
+      flex-shrink:0;
+      background:#e6eef2;
+    }
+    .avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+
+    .meta {
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .name { font-weight:700; font-size:0.98rem; color:#07263f; }
+    .email { font-size:0.85rem; color:#475569; }
+
+    .card-body {
+      padding: 0 12px 12px 12px;
+      display:flex;
+      gap:8px;
+      flex-direction:column;
+      font-size:0.9rem;
+      color:#334155;
+    }
+
+    .badge {
+      display:inline-block;
+      padding:6px 8px;
+      border-radius:999px;
+      background:#f1f5f9;
+      font-size:0.78rem;
+      color:#0b3b57;
+      font-weight:600;
+    }
+
+    footer {
+      margin-top: 14px;
+      display:flex;
+      justify-content:center;
+    }
+    .btn {
+      padding:8px 12px;
+      border-radius:10px;
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .btn.secondary { background:transparent; border:1px solid #cbd5e1; color:#0b3b57; }
+    .btn.primary { background:#0b7285; color:white; margin-left:8px; }
+
+    /* Responsive tweaks */
+    @media (max-width:420px) {
+      .avatar { width:56px; height:56px; }
+      .card { border-radius:10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Random Users (100) — Lite Demo</h1>
+    <div class="controls" aria-hidden="false">
+      <select id="genderFilter" title="Filter by gender">
+        <option value="">All genders</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+
+      <select id="natFilter" title="Filter by nationality (nat)">
+        <option value="">All nations</option>
+        <option value="us">US</option>
+        <option value="gb">GB</option>
+        <option value="ca">CA</option>
+        <option value="au">AU</option>
+        <option value="fr">FR</option>
+        <option value="de">DE</option>
+        <option value="es">ES</option>
+      </select>
+
+      <input id="searchInput" placeholder="Search name or email..." />
+
+      <button id="applyBtn">Apply</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="grid" class="grid" aria-live="polite"></div>
+  </main>
+
+  <footer>
+    <button id="showAll" class="btn secondary">Show all (from fetched)</button>
+    <button id="loadMore" class="btn primary">Load more (20)</button>
+  </footer>
+
+  <script>
+    // Config
+    const API_URL = "https://randomuser.me/api/?results=100&inc=name,email,location,phone,picture,gender,nat,login&noinfo";
+    const PAGE_SIZE = 20; // how many cards to show per "page"
+    let allUsers = []; // will hold fetched data
+    let shownCount = 0; // how many currently appended to grid (from allUsers filtered)
+
+    const grid = document.getElementById("grid");
+    const loadMoreBtn = document.getElementById("loadMore");
+    const showAllBtn = document.getElementById("showAll");
+    const applyBtn = document.getElementById("applyBtn");
+    const genderFilter = document.getElementById("genderFilter");
+    const natFilter = document.getElementById("natFilter");
+    const searchInput = document.getElementById("searchInput");
+
+    // Create card DOM node from user object
+    function createCard(user) {
+      const card = document.createElement("article");
+      card.className = "card";
+      card.setAttribute("data-uuid", user.login.uuid);
+
+      // top: avatar + basic meta
+      const top = document.createElement("div");
+      top.className = "card-top";
+
+      const avatarWrap = document.createElement("div");
+      avatarWrap.className = "avatar";
+      const avatar = document.createElement("img");
+      avatar.src = user.picture.medium || user.picture.thumbnail;
+      avatar.alt = `${user.name.first} ${user.name.last}`;
+      avatar.loading = "lazy";
+      avatarWrap.appendChild(avatar);
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      const name = document.createElement("div");
+      name.className = "name";
+      name.textContent = `${capitalize(user.name.first)} ${capitalize(user.name.last)}`;
+      const email = document.createElement("div");
+      email.className = "email";
+      email.textContent = user.email;
+
+      meta.appendChild(name);
+      meta.appendChild(email);
+
+      top.appendChild(avatarWrap);
+      top.appendChild(meta);
+
+      // body: details
+      const body = document.createElement("div");
+      body.className = "card-body";
+
+      const nat = document.createElement("div");
+      nat.innerHTML = `<span class="badge">Nat: ${user.nat}</span> <span class="badge">${user.gender}</span>`;
+
+      const location = document.createElement("div");
+      location.textContent = `${user.location.city}, ${user.location.country}`;
+
+      const phone = document.createElement("div");
+      phone.textContent = user.phone || "—";
+
+      body.appendChild(nat);
+      body.appendChild(location);
+      body.appendChild(phone);
+
+      // append to card
+      card.appendChild(top);
+      card.appendChild(body);
+
+      return card;
+    }
+
+    // helper
+    function capitalize(s) {
+      if (!s) return "";
+      return s[0].toUpperCase() + s.slice(1);
+    }
+
+    // Render a chunk (next PAGE_SIZE) from filteredUsers into DOM
+    function renderNext(filteredUsers) {
+      const start = shownCount;
+      const end = Math.min(shownCount + PAGE_SIZE, filteredUsers.length);
+      for (let i = start; i < end; i++) {
+        const user = filteredUsers[i];
+        const card = createCard(user);
+        grid.appendChild(card);
+      }
+      shownCount = end;
+      updateButtons(filteredUsers);
+    }
+
+    function updateButtons(filteredUsers) {
+      if (shownCount >= filteredUsers.length) {
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.textContent = "All shown";
+      } else {
+        loadMoreBtn.disabled = false;
+        loadMoreBtn.textContent = `Load more (${Math.min(PAGE_SIZE, filteredUsers.length - shownCount)})`;
+      }
+      showAllBtn.disabled = filteredUsers.length === 0 || shownCount === filteredUsers.length;
+    }
+
+    // Apply filters & search — returns filtered array
+    function getFilteredUsers() {
+      const gender = genderFilter.value;
+      const nat = natFilter.value;
+      const q = searchInput.value.trim().toLowerCase();
+
+      return allUsers.filter(u => {
+        if (gender && u.gender !== gender) return false;
+        if (nat && u.nat.toLowerCase() !== nat.toLowerCase()) return false;
+        if (q) {
+          const fullname = `${u.name.first} ${u.name.last}`.toLowerCase();
+          if (fullname.includes(q) || (u.email && u.email.toLowerCase().includes(q))) return true;
+          return false;
+        }
+        return true;
+      });
+    }
+
+    // Reset grid and counters, then render first page
+    function applyAndRender() {
+      grid.innerHTML = "";
+      shownCount = 0;
+      const filtered = getFilteredUsers();
+      if (filtered.length === 0) {
+        grid.innerHTML = "<p style='padding:12px;color:#334155;'>No users match the filters.</p>";
+        loadMoreBtn.disabled = true;
+        showAllBtn.disabled = true;
+        return;
+      }
+      renderNext(filtered);
+    }
+
+    // Fetch users from API
+    async function fetchUsers() {
+      loadMoreBtn.disabled = true;
+      loadMoreBtn.textContent = "Fetching...";
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error("Network error: " + res.status);
+        const data = await res.json();
+        // randomuser returns { results: [...] }
+        allUsers = Array.isArray(data.results) ? data.results : [];
+        // initial render first PAGE_SIZE
+        applyAndRender();
+      } catch (err) {
+        console.error(err);
+        grid.innerHTML = `<p style="padding:12px;color:#ef4444">Failed to fetch users: ${err.message}</p>`;
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.textContent = "Retry";
+      }
+    }
+
+    // Event handlers
+    loadMoreBtn.addEventListener("click", () => {
+      const filtered = getFilteredUsers();
+      renderNext(filtered);
+    });
+
+    showAllBtn.addEventListener("click", () => {
+      const filtered = getFilteredUsers();
+      // append remaining
+      while (shownCount < filtered.length) {
+        renderNext(filtered);
+      }
+    });
+
+    applyBtn.addEventListener("click", () => applyAndRender());
+
+    // Also apply on Enter key in search input
+    searchInput.addEventListener("keyup", e => {
+      if (e.key === "Enter") applyAndRender();
+    });
+
+    // Initial fetch on load
+    fetchUsers();
+
+    // Accessibility: allow keyboard focus on cards (optional)
+    grid.addEventListener("click", e => {
+      const card = e.target.closest(".card");
+      if (!card) return;
+      const uuid = card.getAttribute("data-uuid");
+      // quick behaviour: copy email to clipboard (demo)
+      const user = allUsers.find(u => u.login.uuid === uuid);
+      if (user) {
+        navigator.clipboard?.writeText(user.email).then(() => {
+          card.animate([{ transform: "translateY(-4px)" }, { transform: "none" }], { duration: 220 });
+          // small hint
+          const notice = document.createElement("div");
+          notice.style.position = "fixed";
+          notice.style.right = "14px";
+          notice.style.bottom = "14px";
+          notice.style.padding = "8px 12px";
+          notice.style.background = "#0b7285";
+          notice.style.color = "white";
+          notice.style.borderRadius = "10px";
+          notice.style.fontWeight = "700";
+          notice.textContent = "Email copied!";
+          document.body.appendChild(notice);
+          setTimeout(() => notice.remove(), 1100);
+        }).catch(()=>{/* ignore */});
+      }
+    });
+  </script>
+</body>
+</html>

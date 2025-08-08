@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Example</title>
+    <style>
+        body {
+            background: #f3f4f6;
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            max-width: 16rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            margin: 1rem auto;
+        }
+
+        .card img {
+            width: 100%;
+            display: block;
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text {
+            color: #374151;
+            font-size: 0.875rem;
+        }
+
+        .card-tags {
+            padding: 1rem 1rem 0.75rem 1rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #bfdbfe;
+            border-radius: 9999px;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1d4ed8;
+            margin-right: 0.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .main-block-card {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-block-card">
+    </div>
+    <script>
+        fetch("https://randomuser.me/api/?results=10")
+            .then(res => res.json())
+            .then((data) => {
+                data.results.forEach(function (users) {
+                    // Card ka main container
+                    const card = document.createElement("div");
+                    card.className = "card";
+
+                    // Image element
+                    const img = document.createElement("img");
+                    img.src = users.picture.large;
+                    img.alt = "Card image";
+                    card.appendChild(img);
+
+                    // Card content container
+                    const cardContent = document.createElement("div");
+                    cardContent.className = "card-content";
+
+                    // Title
+                    const cardTitle = document.createElement("div");
+                    cardTitle.className = "card-title";
+                    cardTitle.textContent = users.name.first + " " + users.name.last;
+
+                    // Paragraph
+                    const cardText = document.createElement("p");
+                    cardText.className = "card-text";
+                    cardText.textContent = "This is a simple card component using normal CSS. You can add any content here.";
+
+                    // Append title & text to content
+                    cardContent.appendChild(cardTitle);
+                    cardContent.appendChild(cardText);
+                    card.appendChild(cardContent);
+
+                    // Card tags container
+                    const cardTags = document.createElement("div");
+                    cardTags.className = "card-tags";
+
+                    // Tags array
+                    const tags = ["#tag1", "#tag2", "#tag3"];
+                    tags.forEach(tagText => {
+                        const tag = document.createElement("span");
+                        tag.className = "tag";
+                        tag.textContent = tagText;
+                        cardTags.appendChild(tag);
+                    });
+
+                    // Append tags to card
+                    card.appendChild(cardTags);
+
+                    // Final append to body (ya kisi container me)
+                    document.querySelector(".main-block-card").appendChild(card);
+
+                })
+            })
+    </script>
+</body>
+
+</html>
+
+</html>
